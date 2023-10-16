@@ -15,7 +15,8 @@
     <div class="btn-group me-2" role="group" aria-label="First group">
         @for (int i = 1; i <= store.PageCount; i++)
         {
-            <button type="button" @onclick="() => store.GetProducts(i)" class="btn btn-outline-primary">@i</button>
+            int buttonValue = i;
+            <button type="button" @onclick="() => store.GetProducts(buttonValue)" class="btn btn-outline-primary">@i</button>
         }
     </div>
 </div>
