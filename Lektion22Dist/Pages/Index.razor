@@ -1,0 +1,65 @@
+﻿@page "/"
+@using Lektion22Dist.Classes;
+@inject Store store
+
+<h1>Products</h1>
+
+<select @onchange="(e) => ChangeCategory(e)">
+    @foreach (var cat in store.GetCategories())
+    {
+        <option value="@cat.Id">@cat.Name</option>
+    }
+</select>
+
+<div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+    <div class="btn-group me-2" role="group" aria-label="First group">
+        @for (int i = 1; i <= store.PageCount; i++)
+        {
+            <button type="button" @onclick="() => store.GetProducts(i)" class="btn btn-outline-primary">@i</button>
+        }
+    </div>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>VAT</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var prod in store.Products)
+        {
+            <tr>
+                <td>@prod.Name</td>
+                <td>@store.GetCategoryName(prod.CategoryId)</td>
+                <td>@prod.Price</td>
+                <td>@prod.Vat</td>
+                <td>@prod.Total</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code{
+
+    void Loop(int id)
+    {
+        
+    }
+
+    void ChangeCategory(ChangeEventArgs e)
+    {
+        if (e.Value is null) return;
+
+        var success = int.TryParse(e.Value.ToString(), out int id);
+
+        if(success)
+        {
+            store.GetProducts(p => p.CategoryId == id);
+        }
+    }
+}
